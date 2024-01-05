@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-
 import { ArrowLeft, Menu, Mic, Search, User } from "lucide-react";
 import Button from "./Button";
+import { useDispatch } from "react-redux";
+import {toggleSidebar} from '../store/appSlice'
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -76,7 +77,7 @@ const Header = () => {
 export default Header;
 
 export function PageHeaderFirstSection({ hidden = false }) {
-
+  const dispatch = useDispatch();
   return (
     <div
       className={` gap-4 items-center flex-shrink-0 ${
@@ -87,6 +88,7 @@ export function PageHeaderFirstSection({ hidden = false }) {
         variant="ghost"
         size="icon"
         className="outline-transparent"
+        onClick={()=>dispatch(toggleSidebar())}
       >
         <Menu />
       </Button>
