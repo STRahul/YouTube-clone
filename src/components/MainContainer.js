@@ -1,10 +1,12 @@
-import VideoContainer from './VideoContainer'
+import VideoContainer from "./VideoContainer";
 const MainContainer = () => {
   return (
-    <div>
+    <>
+      <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         <VideoContainer />
-    </div>
-  )
-}
+      </div>
+    </>
+  );
+};
 
-export default MainContainer
+export default MainContainer;
