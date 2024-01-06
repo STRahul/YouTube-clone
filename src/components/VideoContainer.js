@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useGetData from "../hooks/useGetData";
 import { API_URL } from "../utils/constants"
 import VideoCard from "./VideoCard";
 const VideoContainer = () => {
- const [videos, setVideos] = useState([]);
-  useEffect(()=>{
-    getVideos()
-  },[])
-  async function getVideos(){
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    setVideos(data?.items);
-  }
+ const {data: videos} = useGetData(API_URL);
+
   return (
     <>
     {videos.map((video) => (
