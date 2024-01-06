@@ -1,6 +1,6 @@
 import Header from "./Header";
 import SideBar from "./SideBar";
-import MainContainer from "./MainContainer";
+import { Outlet } from "react-router-dom";
 
 const Body = () => {
   return (
@@ -11,7 +11,7 @@ const Body = () => {
         <div
           className={`overflow-x-hidden pb-4`}
         >
-          <MainContainer />
+          <Outlet />
         </div>
       </div>
     </div>
