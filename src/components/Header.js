@@ -1,13 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowLeft, Menu, Mic, Search, User } from "lucide-react";
 import Button from "./Button";
-import { useDispatch } from "react-redux";
-import {toggleSidebar} from '../store/appSlice'
-
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSidebar } from "../store/appSlice";
+import { SUGGESSION_API_URL } from "../utils/constants";
+import { saveCaches } from "../store/searchSlice";
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
+  const [suggessions, setSuggessions] = useState([]);
+  const [showSuggession, setShowSuggession] = useState(false);
+  const searchCaches = useSelector((store) => store.search);
+  const dispatch  = useDispatch();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchCaches[searchQuery]) {
+        setSuggessions(searchCaches[searchQuery]);
+      } else {
+        getSuggessions();
+      }
+    }, 200);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
 
+  async function getSuggessions() {
+    const response = await fetch(SUGGESSION_API_URL + searchQuery);
+    const data = await response.json();
+    setSuggessions(data[1]);
+    if (data[1].length === 0) {
+      return null;
+    }
+    dispatch(
+      saveCaches({
+        [searchQuery]: data[1],
+      })
+    );
+  }
 
   return (
     <div className="flex gap-10 lg:gap-20 justify-between pt-2 mb-6 mx-4">
@@ -31,18 +61,44 @@ const Header = () => {
         )}
 
         <div className="flex flex-grow max-w-[600px] relative">
+        {showSuggession && <Search className="absolute mx-3 my-2.5" />}
           <input
             type="search"
             placeholder="Search"
-            className={`rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-1 text-lg font-medium w-full focus:border-blue-500 outline-none px-4`}
+            className={`rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-1 text-lg font-medium w-full focus:border-blue-500 outline-none ${showSuggession?'px-12':'px-4'}`}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => {
+              setShowSuggession(true);
+            }}
+            onBlur={() => {
+              setShowSuggession(false);
+            }}
           />
-          <Button
-            className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 flex-shrink-0"
-          >
+          <Button className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 flex-shrink-0">
             <Search />
           </Button>
+          {suggessions.length > 0 && showSuggession && (
+            <div
+              className="absolute w-[90%] mt-11 bg-white rounded-xl m-1 py-3 border z-50"
+              id="suggession"
+            >
+              <ul>
+                {suggessions.map((item) => (
+                  <li
+                    className="flex gap-3 px-9 py-1 hover:bg-gray-200 font-medium text-lg"
+                    key={item}
+                    onClick={() => {
+                      setSearchQuery(item);
+                    }}
+                  >
+                    <Search />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <Button type="button" size="icon" className="flex-shrink-0">
@@ -88,7 +144,7 @@ export function PageHeaderFirstSection({ hidden = false }) {
         variant="ghost"
         size="icon"
         className="outline-transparent"
-        onClick={()=>dispatch(toggleSidebar())}
+        onClick={() => dispatch(toggleSidebar())}
       >
         <Menu />
       </Button>
