@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 
-const useGetData = (url)=> {
-    const  [data, setData] = useState([])
+const useGetData = (url, dependency) => {
+  const [data, setData] = useState([]);
 
-    useEffect(()=>{
-        getData();
-    })
-    async function getData(){
-        const response = await fetch(url);
-        const data = await response.json();
-        setData(data?.items);
-      }
+  useEffect(() => {
+    getData();
+  }, [dependency]);
+  async function getData() {
+    const response = await fetch(url);
+    const data = await response.json();
+    setData(data?.items);
+  }
 
-      return { data }
-}
+  return { data };
+};
 
 export default useGetData;
