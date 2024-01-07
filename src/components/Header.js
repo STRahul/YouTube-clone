@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeft, Menu, Mic, Search, User } from "lucide-react";
 import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../store/appSlice";
 import { SUGGESSION_API_URL } from "../utils/constants";
 import { saveCaches } from "../store/searchSlice";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
   const [suggessions, setSuggessions] = useState([]);
   const [showSuggession, setShowSuggession] = useState(false);
+  const timeout = useRef();
   const searchCaches = useSelector((store) => store.search);
   const dispatch  = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchCaches[searchQuery]) {
@@ -38,6 +42,15 @@ const Header = () => {
       })
     );
   }
+
+  function searchHandler(data){
+    clearTimeout(timeout.current);
+    setShowSuggession(false);
+    if(data.trim().length === 0){
+      return;
+    }
+    let query = data.replace(/\s+/g, "-");
+    navigate("/result?search_query=" + query);  }
 
   return (
     <div className="flex gap-10 lg:gap-20 justify-between pt-2 mb-6 mx-4">
@@ -69,13 +82,16 @@ const Header = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => {
+              clearTimeout(timeout.current);
               setShowSuggession(true);
             }}
             onBlur={() => {
-              setShowSuggession(false);
+              timeout.current = setTimeout(() => {
+                setShowSuggession(false);
+              }, 220)
             }}
           />
-          <Button className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 flex-shrink-0">
+          <Button className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 flex-shrink-0" onClick={()=>searchHandler(searchQuery)}>
             <Search />
           </Button>
           {suggessions.length > 0 && showSuggession && (
@@ -90,6 +106,7 @@ const Header = () => {
                     key={item}
                     onClick={() => {
                       setSearchQuery(item);
+                      searchHandler(item);
                     }}
                   >
                     <Search />

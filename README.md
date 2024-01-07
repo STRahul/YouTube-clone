@@ -5,7 +5,7 @@
   - search bar
   - mic & user icon
 - MainContainer
- - Sidebar Component
+ - Sidebar 
  - VideoContainer
    - VideoCard
 - WatchVideo

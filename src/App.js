@@ -4,6 +4,7 @@ import Body from './components/Body';
 import MainContainer from './components/MainContainer';
 import store from './store/index';
 import WatchVideo from './components/WatchVideo';
+import SearchVideoContainer from './components/SearchVideoContainer';
 const appRouter = createBrowserRouter([
   {
     path:'/',
@@ -16,6 +17,10 @@ const appRouter = createBrowserRouter([
       {
         path: "watch",
         element: <WatchVideo />
+      },
+      {
+        path: "result",
+        element: <SearchVideoContainer />
       }
     ]
   }
