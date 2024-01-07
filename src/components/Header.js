@@ -77,6 +77,7 @@ const Header = () => {
         {showSuggession && <Search className="absolute mx-3 my-2.5" />}
           <input
             type="search"
+            name="search"
             placeholder="Search"
             className={`rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-1 text-lg font-medium w-full focus:border-blue-500 outline-none ${showSuggession?'px-12':'px-4'}`}
             value={searchQuery}

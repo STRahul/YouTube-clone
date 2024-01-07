@@ -38,6 +38,7 @@ const LiveChat = () => {
         <input
           className="border border-gray-600 my-2 mx-4 p-1 px-2 rounded-md outline-none focus:border-green-600"
           type="text"
+          name="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
