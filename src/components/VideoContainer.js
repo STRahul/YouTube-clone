@@ -10,8 +10,11 @@ const VideoContainer = () => {
   if (v !== null) {
     url = url + "&videoCategoryId=" + v;
   }
-  const { data: videos } = useGetData(url, v);
-  if (videos?.length === 0) return <Shimmer />;
+  const { data: videos, error } = useGetData(url, v);
+  if (videos?.length === 0 && !error) return <Shimmer />;
+  else if(error){
+    return <p className="mx-auto my-8 w-[80vw] text-center text-3xl font-bold">Could not fetch Videos.</p>
+  }
   return (
     <>
       {videos.map((video) => (

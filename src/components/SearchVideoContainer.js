@@ -6,12 +6,18 @@ import Shimmer from "./Shimmer";
 const SearchVideoContainer = () => {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams?.get("search_query");
-  const { data: videos } = useGetData(
+  const { data: videos, error } = useGetData(
     SEARCH_API_URL + searchQuery,
     searchQuery
   );
 
-  if (videos?.length === 0) return <Shimmer search={true} />;
+  if (videos?.length === 0 && !error) return <Shimmer search={true} />;
+  else if (error)
+    return (
+      <p className="my-10 text-center text-3xl font-bold">
+        Could not fetch Videos.
+      </p>
+    );
   return (
     <>
       {videos.map((video, i) => (

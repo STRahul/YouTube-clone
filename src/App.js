@@ -5,10 +5,12 @@ import MainContainer from './components/MainContainer';
 import store from './store/index';
 import WatchVideo from './components/WatchVideo';
 import SearchVideoContainer from './components/SearchVideoContainer';
+import Error from './components/Error';
 const appRouter = createBrowserRouter([
   {
     path:'/',
     element : <Body />,
+    errorElement: <Error />,
     children:[
       {
         path: "",

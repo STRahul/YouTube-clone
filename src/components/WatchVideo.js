@@ -12,7 +12,7 @@ const WatchVideo = () => {
     const id = searchParams.get("v");
     const dispatch = useDispatch();
 
-    const { data: comments} = useGetData(COMMENTS_API_URL+id, '');
+    const { data: comments,error} = useGetData(COMMENTS_API_URL+id, '');
 
     useEffect(()=>{
       dispatch(closeSidebar());
@@ -31,7 +31,7 @@ const WatchVideo = () => {
       ></iframe>
       <LiveChat />
     </div>
-    <CommentContainer comments={comments} />
+    <CommentContainer comments={comments} error={error} />
   </div>  )
 }
 

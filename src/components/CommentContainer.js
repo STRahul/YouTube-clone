@@ -42,11 +42,14 @@ const CommentsList = ({ comments, rep }) => {
   ));
 };
 
-const CommentContainer = ({ comments }) => {
-  if (!comments) {
-    return null;
-  }
-  if (comments?.length === 0) return null;
+const CommentContainer = ({ comments, error }) => {
+  if (error)
+    return (
+      <p className="my-5 text-3xl font-bold">
+        Could not fetch Comments.
+      </p>
+    );
+  if (comments || comments?.length === 0) return null;
   return (
     <div>
       <h1 className="font-bold text-3xl m-2 p-2">Comments:</h1>
