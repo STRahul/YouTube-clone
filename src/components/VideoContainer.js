@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import useGetData from "../hooks/useGetData";
 import { API_URL } from "../utils/constants";
 import VideoCard from "./VideoCard";
+import Shimmer from "./Shimmer";
 const VideoContainer = () => {
   const [searchParams] = useSearchParams();
   const v = searchParams?.get("v");
@@ -10,7 +11,7 @@ const VideoContainer = () => {
     url = url + "&videoCategoryId=" + v;
   }
   const { data: videos } = useGetData(url, v);
-
+  if (videos?.length === 0) return <Shimmer />;
   return (
     <>
       {videos.map((video) => (

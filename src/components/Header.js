@@ -89,7 +89,7 @@ const Header = () => {
             onBlur={() => {
               timeout.current = setTimeout(() => {
                 setShowSuggession(false);
-              }, 220)
+              }, 250)
             }}
           />
           <Button className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 flex-shrink-0" onClick={()=>searchHandler(searchQuery)}>
