@@ -49,7 +49,7 @@ const CommentContainer = ({ comments, error }) => {
         Could not fetch Comments.
       </p>
     );
-  if (comments || comments?.length === 0) return null;
+  if (!comments || comments?.length === 0) return null;
   return (
     <div>
       <h1 className="font-bold text-3xl m-2 p-2">Comments:</h1>
