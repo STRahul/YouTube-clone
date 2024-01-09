@@ -1,11 +1,13 @@
+import { lazy,Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import Body from './components/Body';
-import MainContainer from './components/MainContainer';
 import store from './store/index';
-import WatchVideo from './components/WatchVideo';
-import SearchVideoContainer from './components/SearchVideoContainer';
 import Error from './components/Error';
+import Shimmer from './components/Shimmer';
+const MainContainer = lazy(()=>import('./components/MainContainer'));
+const SearchVideoContainer = lazy(()=>import('./components/SearchVideoContainer'));
+const WatchVideo = lazy(()=>import('./components/WatchVideo'));
 const appRouter = createBrowserRouter([
   {
     path:'/',
@@ -14,15 +16,21 @@ const appRouter = createBrowserRouter([
     children:[
       {
         path: "",
-        element: <MainContainer />
+        element: <Suspense fallback={<Shimmer />}>
+          <MainContainer />
+        </Suspense>
       },
       {
         path: "watch",
-        element: <WatchVideo />
+        element: <Suspense fallback={<p className='text-2xl font-bold text-center'>Loading...</p>}>
+          <WatchVideo />
+        </Suspense>
       },
       {
         path: "result",
-        element: <SearchVideoContainer />
+        element: <Suspense fallback={<Shimmer search={true} />}>
+          <SearchVideoContainer />
+        </Suspense>
       }
     ]
   }

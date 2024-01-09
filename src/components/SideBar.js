@@ -24,6 +24,7 @@ const SideBar = () => {
       <ul className="py-4 px-3 md:px-7">
         {sidebarLinkData.map((item) => (
           <SideBarLink
+            key={item.v}
             isActive={item.v === v}
             Icon={item.Icon}
             label={item.label}
