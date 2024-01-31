@@ -1,4 +1,5 @@
 import React from "react";
+import parse from 'html-react-parser';
 
 const Comment = ({ comment }) => {
   const { snippet } = comment;
@@ -17,7 +18,7 @@ const Comment = ({ comment }) => {
         <p className="font-bold text-xl md:text-3xl">
           {snippet?.authorDisplayName}
         </p>
-        <p>{snippet?.textDisplay}</p>
+        <p className="[&>a]:text-blue-700">{parse(snippet?.textDisplay)}</p>
       </div>
     </div>
   );
