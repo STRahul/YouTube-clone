@@ -20,6 +20,11 @@ export const COMMENTS_API_URL =
   "https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&key=" +
   API_KEY +
   "&maxResults=100&videoId=";
+  export const CHANNEL_INFO_API = "https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&key=" + API_KEY
+
+  export const VIDEO_DETAILS_API =
+    "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&key=" +
+    API_KEY;
 
 export const CATEGORIES = [
   "All",
