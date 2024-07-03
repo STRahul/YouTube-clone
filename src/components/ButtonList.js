@@ -1,18 +1,18 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
-import { CATEGORIES } from "../utils/constants";
-
+import { VIDEO_CATEGORY_API } from "../utils/constants";
+import useGetData from "../hooks/useGetData";
 const TRANSLATE_AMOUNT = 200;
 
 const ButtonList = () => {
   const [translate, setTranslate] = useState(0);
   const [isLeftVisible, setIsLeftVisible] = useState(false);
   const [isRightVisible, setIsRightVisible] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]);
-
+  const [selectedCategory, setSelectedCategory] = useState({title: 'All',id:"all"});
+  const { data: videoCategories } = useGetData(VIDEO_CATEGORY_API,'');
   const containerRef = useRef(null);
-
+  
   useEffect(() => {
     if (containerRef.current == null) return;
 
@@ -33,20 +33,36 @@ const ButtonList = () => {
       observer.disconnect();
     };
   }, [translate]);
+
+  const clickHandler = (c)=>{
+    setSelectedCategory({
+      title: c.snippet.title,
+      id: c.id
+    });
+  }
+
   return (
     <div ref={containerRef} className="overflow-x-hidden relative">
       <div
         className="flex whitespace-nowrap gap-3 transition-transform w-[max-content]"
         style={{ transform: `translateX(-${translate}px)` }}
       >
-        {CATEGORIES.map((category) => (
-          <Button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            variant={selectedCategory === category ? "dark" : "default"}
+        {videoCategories?.length > 0 &&<Button
+            key=""
+            onClick={() => clickHandler({snippet:{title: 'All'},id: "all"})}
+            variant={selectedCategory.id === "all" ? "dark" : "default"}
             className="py-1 px-3 rounded-lg whitespace-nowrap"
           >
-            {category}
+            All
+          </Button>}
+        {videoCategories.map((category) => (
+          <Button
+            key={category.id}
+            onClick={() => clickHandler(category)}
+            variant={selectedCategory.title === category?.snippet?.title ? "dark" : "default"}
+            className="py-1 px-3 rounded-lg whitespace-nowrap"
+          >
+            {category?.snippet?.title}
           </Button>
         ))}
       </div>

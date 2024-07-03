@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 import { BiLike, BiDislike } from 'react-icons/bi'
 import { BiSolidLike, BiSolidDislike } from 'react-icons/bi'
@@ -10,53 +10,27 @@ import { HiOutlineChevronDown } from 'react-icons/hi2'
 import { CHANNEL_INFO_API, VIDEO_DETAILS_API } from '../utils/constants'
 import { abbreviateNumber } from '../utils/helper';
 import { formatTimeAgo } from '../utils/formatTimeAgo';
+import useGetData from '../hooks/useGetData';
 
 const ChannelData = ({ videoId }) => {
-  const [videoData, setVideoData] = useState({});
   const [subscribe, setSubscribe] = useState(false);
-  const [channelPicture, setChannelPicture] = useState('');
-  const [subScribers, setSubScribers] = useState(0)
   const [like, setLike] = useState(true)
   const [disLike, setDisLike] = useState(true)
   const [showMore, setShowMore] = useState(false);
 
-   const subscriberCount = abbreviateNumber(subScribers);
-   const likeCount = abbreviateNumber(videoData?.statistics?.likeCount);
-   const viewCount = abbreviateNumber(videoData?.statistics?.viewCount);
-   const calender = formatTimeAgo(videoData?.snippet?.publishedAt);
-  useEffect(() => {
-    fetchVideoData();
-  }, [videoId]);
+  const { data: videoDetails, error: videoError } = useGetData(VIDEO_DETAILS_API + '&id=' + videoId, videoId)
+  const videoData = videoDetails?.[0] || {};
 
-  const fetchVideoData = async () => {
-    try {
-      const data = await fetch(VIDEO_DETAILS_API + '&id=' + videoId);
-      const response = await data.json();
-      setVideoData(response?.items?.[0]);
-      //console.log(response.items)
-    } catch (error) {
-      console.log('Error while fetching video details', error);
-    }
-  };
+  const { data: channelData, error: channelError } = useGetData(CHANNEL_INFO_API + '&id=' + videoData?.snippet?.channelId, videoData?.snippet?.channelId);
 
-  useEffect(() => {
-    if (videoData?.snippet?.channelId) {
-      fetchChannelData();
-    }
-  }, [videoData?.snippet?.channelId]);
+  const likeCount = abbreviateNumber(videoData?.statistics?.likeCount);
+  const viewCount = abbreviateNumber(videoData?.statistics?.viewCount);
+  const calender = formatTimeAgo(videoData?.snippet?.publishedAt);
+  const subScribers = channelData?.[0]?.statistics?.subscriberCount || ''; 
+  const channelPicture = channelData?.[0]?.snippet?.thumbnails?.default?.url || 
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5958mvxyOALrWelcizzxdX48KqChi9Vh2Sr_NETQ&s';
+  const subscriberCount = abbreviateNumber(subScribers);
 
-  const fetchChannelData = async () => {
-    try {
-      const data = await fetch(CHANNEL_INFO_API + '&id=' + videoData?.snippet?.channelId);
-      const response = await data.json();
-      const profilePictureUrl = response?.items?.[0]?.snippet?.thumbnails?.default?.url || '';
-      const subScribers = response?.items?.[0]?.statistics?.subscriberCount || ''
-      setChannelPicture(profilePictureUrl);
-      setSubScribers(subScribers)
-    } catch (error) {
-      console.log("Couldn't fetch channel data", error);
-    }
-  };
 
   const handleLikeToggle = () => {
     setLike(!like);
@@ -67,6 +41,14 @@ const ChannelData = ({ videoId }) => {
     setDisLike(!disLike);
     setLike(true);
   };
+
+  if(videoError || channelError){
+    return (
+      <p className="mx-auto my-3 text-center text-2xl font-bold">
+        Could not fetch Data.
+      </p>
+    );
+  }
 
   return (
     <div className='flex flex-col my-2 gap-3'>

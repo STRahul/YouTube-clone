@@ -11,7 +11,7 @@ export const API_URL =
   "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=IN&key=" +
   API_KEY;
 export const SUGGESSION_API_URL =
- "https://cors-anywhere.herokuapp.com/https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q="
+ "https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q="
   //"https://corsproxy.org/?https%3A%2F%2Fsuggestqueries.google.com%2Fcomplete%2Fsearch%3Fclient%3Dfirefox%26ds%3Dyt%26q%3D";
 export const SEARCH_API_URL =
   "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&key=" +
@@ -27,24 +27,10 @@ export const COMMENTS_API_URL =
     "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&key=" +
     API_KEY;
 
-export const CATEGORIES = [
-  "All",
-  "JavaScript",
-  "TypeScript",
-  "Programming",
-  "Travelling",
-  "Cricket World Cup 2023",
-  "Bowling",
-  "Cricket",
-  "React",
-  "Next.js",
-  "UI/UX Design",
-  "Object Oriented Programming",
-  "Frontend Web Development",
-  "Backend Web Development",
-  "Web Development",
-  "Coding",
-];
+  export const VIDEO_CATEGORY_API = "https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode=IN&key=" + API_KEY;
+
+  export const VIDEOS_ID_API = "https://youtube.googleapis.com/youtube/v3/videos?chart=mostPopular&maxResults=100&key=" + API_KEY + "&videoCategoryId=";
+
 
 export const sidebarLinkData = [
   {

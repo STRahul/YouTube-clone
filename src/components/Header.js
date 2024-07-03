@@ -6,6 +6,8 @@ import { toggleSidebar } from "../store/appSlice";
 import { SUGGESSION_API_URL } from "../utils/constants";
 import { saveCaches } from "../store/searchSlice";
 import { Link, useNavigate } from "react-router-dom";
+let initial = false;
+
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
@@ -21,11 +23,13 @@ const Header = () => {
       if (searchCaches[searchQuery]) {
         setSuggessions(searchCaches[searchQuery]);
       } else {
-        getSuggessions();
+        if(initial)
+         getSuggessions().catch(err=>console.log(err));
       }
     }, 200);
     return () => {
       clearTimeout(timer);
+      initial = true;
     };
   }, [searchQuery]);
 
@@ -79,7 +83,7 @@ const Header = () => {
             type="search"
             name="search"
             placeholder="Search"
-            className={`rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-1 text-lg font-medium w-full focus:border-blue-500 outline-none ${showSuggession?'px-12':'px-4'}`}
+            className={`rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-1 text-lg font-medium w-full focus:border-blue-500 outline-none ${showSuggession?'pl-12 pr-2':'px-4'}`}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => {

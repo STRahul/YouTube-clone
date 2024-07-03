@@ -9,7 +9,7 @@ const Shimmer = ({ search = false }) => {
           <div key={index}>
             <div className={`flex ${search ? "flex-row" : "flex-col"}`}>
               <div
-                className={`h-40 bg-gray-200 rounded-xl ${
+                className={`h-48 bg-gray-200 rounded-xl ${
                   search ? "w-[35%] m-4" : "w-full"
                 }`}
               ></div>

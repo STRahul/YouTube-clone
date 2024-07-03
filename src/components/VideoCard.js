@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import { abbreviateNumber } from "../utils/helper";
 import { formatDuration } from "../utils/formatDuration";
 import { formatTimeAgo } from "../utils/formatTimeAgo";
+import useGetData from "../hooks/useGetData";
+import { CHANNEL_INFO_API } from "../utils/constants";
 
 const VideoCard = ({ info }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { snippet, statistics, contentDetails } = info;
   const { thumbnails, channelTitle, title, publishedAt } = snippet;
   const views = abbreviateNumber(statistics?.viewCount);
+  const {data: channelData} = useGetData(CHANNEL_INFO_API+ "&id="+ snippet?.channelId, snippet?.channelId);
+  const channelPicture = channelData?.[0]?.snippet?.thumbnails?.default?.url || 
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5958mvxyOALrWelcizzxdX48KqChi9Vh2Sr_NETQ&s';
+
   return (
     <div
       className="flex flex-col gap-2 p-3 m-2"
@@ -38,8 +44,8 @@ const VideoCard = ({ info }) => {
       </div>
       <div className="flex gap-1">
         <img
-          className="h-10 mt-2"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5958mvxyOALrWelcizzxdX48KqChi9Vh2Sr_NETQ&s"
+          className="h-10 mt-2 rounded-full"
+          src={channelPicture}
           alt="user-logo"
         />
         <div>

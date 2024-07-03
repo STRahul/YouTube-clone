@@ -6,30 +6,34 @@ import Shimmer from "./Shimmer";
 import { useLayoutEffect } from "react";
 import { useDispatch } from "react-redux";
 import { closeSidebar } from "../store/appSlice";
+
 const VideoContainer = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
   const location = useLocation();
   const v = searchParams?.get("v");
   let url = API_URL;
-  if (v !== null && location.pathname != '/watch') {
+  if (v !== null && location.pathname !== '/watch') {
     url = url + "&videoCategoryId=" + v;
   }
-  const { data: videos, error } = useGetData(url, v);
+  const { data: videos, error } = useGetData(url, v, true);
+
 
   useLayoutEffect(() => {
+
+    function handleResize() {
+      if (window.innerWidth < 1200) {
+        dispatch(closeSidebar());
+      }
+    }
+
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [dispatch]);
   
-  function handleResize() {
-    if (window.innerWidth < 1200) {
-      dispatch(closeSidebar());
-    }
-  }
 
   if (videos?.length === 0 && !error) return <Shimmer />;
   else if (error) {

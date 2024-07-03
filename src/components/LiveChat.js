@@ -3,6 +3,7 @@ import ChatMessage from "./ChatMessage";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../store/chatSlice";
 import { generateName, generateText } from "../utils/helper";
+import imageUrl from '../assets/enter.png'
 const LiveChat = () => {
   const [message, setMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(true);
@@ -19,7 +20,7 @@ const LiveChat = () => {
     }, 1000);
 
     return () => clearInterval(i);
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -52,12 +53,13 @@ const LiveChat = () => {
             className="border border-gray-600 my-2 mx-4 p-1 px-2 rounded-md outline-none focus:border-sky-600"
             type="text"
             placeholder="Chat..."
+            autoComplete="off"
             name="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button className="bg-gray-800 text-white md:text-xl px-4 py-1 my-2 rounded-md">
-            Next
+          <button>
+            <img src={imageUrl} alt="user-icon" />
           </button>
         </form>
         <div className="flex justify-center bg-black py-2 rounded-b-lg text-white">

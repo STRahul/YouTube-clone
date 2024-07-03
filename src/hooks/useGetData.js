@@ -7,15 +7,17 @@ const useGetData = (url, dependency) => {
 
   useEffect(() => {
     getData().catch(err=> err.json()).then(res=>setError(res));;
-  }, [dependency]);
-  async function getData() {
-    const response = await fetch(url);
-    if(!response.ok){
-      throw json({message: 'Could not fetch data.'},{status: 500})
-     }
-    const data = await response.json();
-    setData(data?.items);
-  }
+
+    async function getData() {
+      const response = await fetch(url);
+      if(!response.ok){
+        throw json({message: 'Could not fetch data.'},{status: 500})
+       }
+      const data = await response.json();
+      setData(data?.items);
+    }
+  }, [dependency,url]);
+ 
 
   return { data,error };
 };
