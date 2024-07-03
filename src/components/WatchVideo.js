@@ -17,7 +17,7 @@ const WatchVideo = () => {
 
   useEffect(() => {
     dispatch(closeSidebar());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="my-3 mx-5 p-3">

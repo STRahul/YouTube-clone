@@ -19,6 +19,21 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    async function getSuggessions() {
+      const response = await fetch(SUGGESSION_API_URL + searchQuery);
+      const data = await response.json();
+      setSuggessions(data[1]);
+      if (data[1].length === 0) {
+        return null;
+      }
+      dispatch(
+        saveCaches({
+          [searchQuery]: data[1],
+        })
+      );
+    }
+
     const timer = setTimeout(() => {
       if (searchCaches[searchQuery]) {
         setSuggessions(searchCaches[searchQuery]);
@@ -31,21 +46,9 @@ const Header = () => {
       clearTimeout(timer);
       initial = true;
     };
-  }, [searchQuery]);
+  }, [searchQuery,dispatch,searchCaches]);
 
-  async function getSuggessions() {
-    const response = await fetch(SUGGESSION_API_URL + searchQuery);
-    const data = await response.json();
-    setSuggessions(data[1]);
-    if (data[1].length === 0) {
-      return null;
-    }
-    dispatch(
-      saveCaches({
-        [searchQuery]: data[1],
-      })
-    );
-  }
+ 
 
   function searchHandler(data){
     clearTimeout(timeout.current);

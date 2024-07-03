@@ -18,6 +18,7 @@ const Error = () => {
         <img
           className="w-44"
           src="https://www.gstatic.com/youtube/src/web/htdocs/img/monkey.png"
+          alt="monkey"
         />
       )}
       <p className="text-xl text-center font-medium p-2 w-[30%]">
