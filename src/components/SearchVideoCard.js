@@ -1,7 +1,16 @@
+import useGetData from "../hooks/useGetData";
+import { CHANNEL_INFO_API } from "../utils/constants";
+import { formatTimeAgo } from "../utils/formatTimeAgo";
+import { abbreviateNumber } from "../utils/helper";
 
 const SearchVideoCard = ({ info }) => {
   const { snippet } = info;
-  const { thumbnails, channelTitle, title } = snippet;
+  const { thumbnails, channelTitle, title, publishedAt } = snippet;
+  const {data: channelData} = useGetData(CHANNEL_INFO_API+ "&id="+ snippet?.channelId, snippet?.channelId);
+  const channelPicture = channelData?.[0]?.snippet?.thumbnails?.default?.url || 
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5958mvxyOALrWelcizzxdX48KqChi9Vh2Sr_NETQ&s';
+  const viewCount = abbreviateNumber(channelData?.[0]?.statistics?.viewCount);
+
   return (
     <div className="flex md:p-3 md:gap-3 mx-4 flex-col md:flex-row">
       <div className="md:p-3 m-2">
@@ -15,8 +24,14 @@ const SearchVideoCard = ({ info }) => {
         <h1 className="p-1 font-medium text-lg md:text-2xl break-words">
           {title}
         </h1>
-        <div className="flex items-center">
-          <img className="h-6" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5958mvxyOALrWelcizzxdX48KqChi9Vh2Sr_NETQ&s" alt="user-logo" />
+        <div className="flex">
+          <span className="pl-2">{viewCount} views</span>
+          <p className="before:content-['•'] before:mx-1">
+              {formatTimeAgo(publishedAt)}
+          </p>
+        </div>
+        <div className="flex items-center py-2">
+          <img className="h-10 rounded-full" src={channelPicture} alt="user-logo" />
           <h2 className="px-2 p-3 font-medium">{channelTitle}</h2>
         </div>
       </div>

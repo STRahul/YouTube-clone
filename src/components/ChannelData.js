@@ -45,7 +45,7 @@ const ChannelData = ({ videoId }) => {
   if(videoError || channelError){
     return (
       <p className="mx-auto my-3 text-center text-2xl font-bold">
-        Could not fetch Data.
+        {'Could not fetch Video Data.'}
       </p>
     );
   }

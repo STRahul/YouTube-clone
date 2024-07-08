@@ -4,6 +4,7 @@ const AppSlice = createSlice({
     name: 'app',
     initialState: {
         isSidebarOpen: true,
+        categoryId: 'all',
     },
     reducers:{
         toggleSidebar: (state)=>{
@@ -11,8 +12,11 @@ const AppSlice = createSlice({
         },
         closeSidebar: (state)=>{
             state.isSidebarOpen = false;
+        },
+        addCategory: (state,action)=>{
+            state.categoryId = action.payload
         }
     }
 })
-export const { toggleSidebar, closeSidebar } = AppSlice.actions;
+export const { toggleSidebar, closeSidebar, addCategory } = AppSlice.actions;
 export default AppSlice.reducer;

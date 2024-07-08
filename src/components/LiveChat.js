@@ -6,7 +6,7 @@ import { generateName, generateText } from "../utils/helper";
 import imageUrl from '../assets/enter.png'
 const LiveChat = () => {
   const [message, setMessage] = useState("");
-  const [isChatOpen, setIsChatOpen] = useState(true);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const dispatch = useDispatch();
   const chats = useSelector((store) => store.chat.message);
   useEffect(() => {
