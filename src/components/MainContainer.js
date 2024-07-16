@@ -6,7 +6,7 @@ const MainContainer = () => {
   const v = searchParams?.get("v");
   return (
     <>
-      {v === null && <div className="sticky top-0 bg-white z-10 pb-4">
+      {v === null && <div className="sticky -top-[1px] sm:top-0 bg-white z-10 pb-4">
         <ButtonList />
       </div>}
       <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">

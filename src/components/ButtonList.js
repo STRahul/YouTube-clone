@@ -50,7 +50,7 @@ const ButtonList = () => {
   return (
     <div ref={containerRef} className="overflow-x-hidden relative">
       <div
-        className="flex whitespace-nowrap gap-3 transition-transform w-[max-content]"
+        className="flex whitespace-nowrap gap-3 transition-transform w-[max-content] px-3 sm:px-0"
         style={{ transform: `translateX(-${translate}px)` }}
       >
         {videoCategories?.length > 0 && <Button
