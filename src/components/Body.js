@@ -18,10 +18,10 @@ const Body = () => {
 
   if (isOnline) {
     content = (
-      <div className="grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto">
+      <div className="grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto [&::-webkit-scrollbar]:hidden">
         <SideBar />
         <div
-          className={`overflow-x-hidden pb-4 ${
+          className={`overflow-x-hidden pb-4 [&::-webkit-scrollbar]:hidden ${
             isSidebarOpen ? "px-8" : "md:px-8"
           } ${location.pathname === "/watch" ? "w-[100vw]" : ""}`}
         >
